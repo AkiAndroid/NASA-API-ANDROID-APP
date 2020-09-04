@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -20,6 +21,7 @@ public class DatePicker extends AppCompatActivity {
     ImageButton lookButton;
     private DatePickerDialog.OnDateSetListener dateSetListener;
     int day1=0,month1=0,year1=0;
+    int todayday,todaymonth,todayyear;
     String Date="";
 
     @Override
@@ -39,6 +41,12 @@ public class DatePicker extends AppCompatActivity {
                int day=calendar.get(Calendar.DAY_OF_MONTH);
                int month=calendar.get(Calendar.MONTH);
                int year=calendar.get(Calendar.YEAR);
+
+               todayday=calendar.get(Calendar.DAY_OF_MONTH);
+               todaymonth=calendar.get(Calendar.MONTH);
+
+
+
 
                 DatePickerDialog dialog=new DatePickerDialog(
                         DatePicker.this,
@@ -69,9 +77,22 @@ public class DatePicker extends AppCompatActivity {
         lookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("date", Date);
-                startActivity(intent);
+                Calendar calendar=Calendar.getInstance();
+                int day=calendar.get(Calendar.DAY_OF_MONTH);
+                int month=calendar.get(Calendar.MONTH)+1;
+                int year=calendar.get(Calendar.YEAR);
+
+                if (day1<=day&&month1<=month&&year1<=year){
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.putExtra("date", Date);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(DatePicker.this, "It cannot predict the future", Toast.LENGTH_SHORT).show();
+
+
+                }
+
             }
         });
 
