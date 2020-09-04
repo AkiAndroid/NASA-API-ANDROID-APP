@@ -20,9 +20,10 @@ public class DatePicker extends AppCompatActivity {
     private TextView datetext;
     ImageButton lookButton;
     private DatePickerDialog.OnDateSetListener dateSetListener;
-    int day1=0,month1=0,year1=0;
+    int day1,month1,year1;
     int todayday,todaymonth,todayyear;
     String Date="";
+    Calendar calendar1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +38,11 @@ public class DatePicker extends AppCompatActivity {
         datetext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Calendar calendar=Calendar.getInstance();
                int day=calendar.get(Calendar.DAY_OF_MONTH);
                int month=calendar.get(Calendar.MONTH);
                int year=calendar.get(Calendar.YEAR);
-
-               todayday=calendar.get(Calendar.DAY_OF_MONTH);
-               todaymonth=calendar.get(Calendar.MONTH);
-
-
 
 
                 DatePickerDialog dialog=new DatePickerDialog(
@@ -69,6 +66,12 @@ public class DatePicker extends AppCompatActivity {
                 datetext.setText(year1+":"+month1+":"+day1);
                Date=String.valueOf(year1)+"-"+String.format("%02d",month1)+"-"+String.format("%02d",day1);
                 Log.d("Hello", Date);
+                lookButton.setVisibility(View.VISIBLE);
+
+                calendar1=Calendar.getInstance();
+                calendar1.set(Calendar.YEAR,year1);
+                calendar1.set(Calendar.MONTH,month1-1);
+                calendar1.set(Calendar.DAY_OF_MONTH,day1);
 
 
             }
@@ -77,16 +80,15 @@ public class DatePicker extends AppCompatActivity {
         lookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar calendar=Calendar.getInstance();
-                int day=calendar.get(Calendar.DAY_OF_MONTH);
-                int month=calendar.get(Calendar.MONTH)+1;
-                int year=calendar.get(Calendar.YEAR);
+               Log.d("Hello",String.valueOf(day1));
 
-                if (day1<=day&&month1<=month&&year1<=year){
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.putExtra("date", Date);
-                    startActivity(intent);
-                }
+               if(!calendar1.after(Calendar.getInstance())){
+                   Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                   intent.putExtra("date", Date);
+                   startActivity(intent);
+
+               }
+
                 else {
                     Toast.makeText(DatePicker.this, "It cannot predict the future", Toast.LENGTH_SHORT).show();
 
